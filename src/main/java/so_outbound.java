@@ -1,5 +1,3 @@
-package mappers;
-
 import Structures.SalesOrders.LinesItem;
 import Structures.SalesOrders.SalesOrders;
 import Structures.SalesOrders.SalesorderDataItem;

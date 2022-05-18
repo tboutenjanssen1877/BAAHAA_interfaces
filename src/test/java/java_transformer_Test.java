@@ -1,6 +1,3 @@
-import mappers.items;
-import mappers.po_inbound;
-import mappers.so_outbound;
 import nl.copernicus.niklas.test.*;
 import nl.copernicus.niklas.transformer.Header;
 import nl.copernicus.niklas.transformer.NiklasComponentException;
@@ -37,30 +34,67 @@ public class java_transformer_Test extends FunctionalTestCase {
     }
 
 
-    public void testProcess(String filename, String prefix) throws NiklasComponentException, IOException, NiklasInterruptionException {
+
+    @Test
+    public void testProcess_Items() throws NiklasComponentException, IOException {
         MockupNiklasProperties props = new MockupNiklasProperties();
         hdr = new MockupHeader(props.getProperties(), MockupHeader.DEFAULT_ENCODING);
 
-        File file = new File("src/test/resources/input/" + filename);
-        incoming transformerInstance = getTransformerInstance(incoming.class);
-        hdr.setProperty("NIKLAS_FILE_NAME", prefix + "_" +file.getName());
+        File file = new File("src/test/resources/input/Items.json");
+        items transformerInstance = getTransformerInstance(items.class);
+        hdr.setProperty("NIKLAS_FILE_NAME", file.getName());
+        System.out.println(new String(transformerInstance.process(hdr, FileUtils.readFileToByteArray(file))));
+        super.destroy(transformerInstance);
+    }
+
+    @Test
+    public void testProcess_PO() throws NiklasComponentException, IOException {
+        MockupNiklasProperties props = new MockupNiklasProperties();
+        hdr = new MockupHeader(props.getProperties(), MockupHeader.DEFAULT_ENCODING);
+
+        File file = new File("src/test/resources/input/PO.json");
+        po_inbound transformerInstance = getTransformerInstance(po_inbound.class);
+        hdr.setProperty("NIKLAS_FILE_NAME", file.getName());
+        System.out.println(new String(transformerInstance.process(hdr, FileUtils.readFileToByteArray(file))));
+        super.destroy(transformerInstance);
+    }
+
+    @Test
+    public void testProcess_SO() throws NiklasComponentException, IOException {
+        MockupNiklasProperties props = new MockupNiklasProperties();
+        hdr = new MockupHeader(props.getProperties(), MockupHeader.DEFAULT_ENCODING);
+
+        File file = new File("src/test/resources/input/SO.json");
+        so_outbound transformerInstance = getTransformerInstance(so_outbound.class);
+        hdr.setProperty("NIKLAS_FILE_NAME", file.getName());
         System.out.println(new String(transformerInstance.process(hdr, FileUtils.readFileToByteArray(file))));
         super.destroy(transformerInstance);
     }
 
 
+    public void testFilter(String filename, String prefix) throws NiklasComponentException, IOException, NiklasInterruptionException {
+        MockupNiklasProperties props = new MockupNiklasProperties();
+        hdr = new MockupHeader(props.getProperties(), MockupHeader.DEFAULT_ENCODING);
+        incoming_filter transformerInstance = getTransformerInstance(incoming_filter.class);
+
+        File items = new File("src/test/resources/input/" + filename);
+        hdr.setProperty("NIKLAS_FILE_NAME", prefix + "_" + items.getName());
+        transformerInstance.process(hdr, FileUtils.readFileToByteArray(items));
+        super.destroy(transformerInstance);
+    }
+
     @Test(expected = NiklasInterruptionException.class)
-    public void testProcess_Items() throws NiklasComponentException, IOException, NiklasInterruptionException {
-        testProcess("Items.json", "");
+    public void testFilter_Items() throws NiklasInterruptionException, NiklasComponentException, IOException {
+        testFilter("Items.json", "unknown");
     }
 
-    @Test
-    public void testProcess_PO() throws NiklasComponentException, IOException, NiklasInterruptionException {
-        testProcess("PO.json", "purchaseorder");
+    @Test(expected = NiklasInterruptionException.class)
+    public void testFilter_PO() throws NiklasInterruptionException, NiklasComponentException, IOException {
+        testFilter("PO.json", "purchaseorder");
     }
 
-    @Test
-    public void testProcess_SO() throws NiklasComponentException, IOException, NiklasInterruptionException {
-        testProcess("SO.json", "salesorder");
+    @Test(expected = NiklasInterruptionException.class)
+    public void testFilter_SO() throws NiklasInterruptionException, NiklasComponentException, IOException {
+        testFilter("SO.json", "salesorder");
     }
 }
