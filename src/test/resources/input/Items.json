@@ -1,0 +1,42 @@
+{
+    "run_date_unix": 1648410071,
+    "run_date_iso": "2022-03-27T19:41:11.497Z",
+    "item_data": [
+        {
+            "NS_INTERNAL_ID": "179618",
+            "BV_3PL_ITEM": true,
+            "SKU": "EU Test Item 2",
+            "UPC": "0909123457",
+            "ITEM_HEIGHT_CM": "10",
+            "ITEM_LENGTH_CM": "10",
+            "ITEM_WIDTH_CM": "10",
+            "ITEM_WEIGHT_KG": "10",
+            "COMMODITY_DESC": "Titanium Body Piercing Jewelry",
+            "HARMONIZED_CODE": "7117.19.9000",
+            "MFG": "NeoMetal",
+            "MFG_COUNTRY": "US",
+            "SHELF_LIFE_DAYS": "2",
+            "IS_BATCH": "",
+            "ITEM_EXPIRES": "",
+            "STOCK_LEVEL": "1"
+        },
+        {
+            "NS_INTERNAL_ID": "138936",
+            "BV_3PL_ITEM": true,
+            "SKU": "PT : PT14U",
+            "UPC": "0909123457",
+            "ITEM_HEIGHT_CM": "1",
+            "ITEM_LENGTH_CM": "1",
+            "ITEM_WIDTH_CM": "1",
+            "ITEM_WEIGHT_KG": "1",
+            "COMMODITY_DESC": "Titanium Body Piercing Jewelry",
+            "HARMONIZED_CODE": "7117.19.9000",
+            "MFG": "NeoMetal",
+            "MFG_COUNTRY": "US",
+            "SHELF_LIFE_DAYS": "",
+            "IS_BATCH": "No",
+            "ITEM_EXPIRES": "No",
+            "STOCK_LEVEL": "1"
+        }
+    ]
+}
