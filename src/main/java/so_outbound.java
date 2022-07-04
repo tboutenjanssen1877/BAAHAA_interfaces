@@ -71,9 +71,12 @@ public class so_outbound implements NiklasComponent <byte[],byte[]>, NiklasLogge
 
             order.getAddress().addAll(mapAddresses(header));
 
-            //todo: Wat moet ik doen met AMOUNT? Het lijkt een getal met 3 decimalen achter de komma.
-
             order.getArticleLine().addAll(mapArticles(lines));
+
+            ExtraReferenceType ref = new ExtraReferenceType();
+            ref.setReferenceCode(61);
+            ref.setReferenceText(header.getInternalId());
+            order.getExtraReference().add(ref);
 
             outbound.setOrder(order);
 
@@ -120,7 +123,7 @@ public class so_outbound implements NiklasComponent <byte[],byte[]>, NiklasLogge
         d.setAddressLine3(header.getSHIPADDRESS3());
         d.setCityName(header.getSHIPADDRESSCITY());
         d.setPostalCode(header.getSHIPADDRESSZIP());
-        d.setCountryCode(header.getSHIPADDRESSCOUNTRY()); //fixme: Country opvragen in ISO2 code, ipv Landnaam
+        d.setCountryCode(header.getSHIPADDRESSCOUNTRY());
 
         String s = mf.CreateAddressSearchname(searchname, d.getNameLine1(), d.getAddressLine1(), d.getPostalCode(), d.getCountryCode());
 
@@ -146,11 +149,18 @@ public class so_outbound implements NiklasComponent <byte[],byte[]>, NiklasLogge
         for (LinesItem item : items) {
             ArticleLineType line = new ArticleLineType();
             line.setArticleCode(item.getITEM());
-            line.setQuantity(BigDecimal.valueOf(Double.parseDouble(item.getORDERQTY())));
+            line.setQuantity(BigDecimal.valueOf(Double.parseDouble(item.getORDERQTY().isEmpty() ? "0.0" : item.getORDERQTY())));
 
+            /*
             ArticlelineDescriptionType text = new ArticlelineDescriptionType();
-            text.setArticleLineText(item.getITEMDESC().trim());
+            text.setArticleLineText("DESCR:" + item.getITEMDESC().trim());
             line.getArticlelineDescription().add(text);
+            */
+
+            ArticlelineDescriptionType rate = new ArticlelineDescriptionType();
+            //rate.setArticleLineText("RATE:" + item.getRate());
+            rate.setArticleLineText(item.getRate());
+            line.getArticlelineDescription().add(rate);
 
             lines.add(line);
         }

@@ -61,6 +61,20 @@ public class LinesItem{
 	@SerializedName("VENDOR_ADDRESS_1")
 	private String vENDORADDRESS1;
 
+	@SerializedName("INTERNAL_ID")
+	private String internalId;
+
+	@SerializedName("RATE")
+	private String rate;
+
+	public String getRate() {
+		return rate;
+	}
+
+	public String getInternalId() {
+		return internalId;
+	}
+
 	public String getVENDORADDRESS2(){
 		return vENDORADDRESS2;
 	}

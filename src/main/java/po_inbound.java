@@ -71,9 +71,12 @@ public class po_inbound implements NiklasComponent <byte[],byte[]>, NiklasLogger
 
             order.getAddress().addAll(mapAddresses(header));
 
-            //todo: Wat moet ik doen met AMOUNT? Het lijkt een getal met 3 decimalen achter de komma.
-
             order.getArticleLine().addAll(mapArticles(lines));
+
+            ExtraReferenceType ref = new ExtraReferenceType();
+            ref.setReferenceCode(61);
+            ref.setReferenceText(header.getInternalId());
+            order.getExtraReference().add(ref);
 
             inbound.setOrder(order);
 
@@ -97,7 +100,7 @@ public class po_inbound implements NiklasComponent <byte[],byte[]>, NiklasLogger
         d.setAddressLine3(header.getVENDORADDRESS3());
         d.setCityName(header.getVENDORADDRESSCITY());
         d.setPostalCode(header.getVENDORADDRESSZIP());
-        d.setCountryCode(header.getVENDORADDRESSCOUNTRY()); //fixme: Country opvragen in ISO2 code, ipv Landnaam
+        d.setCountryCode(header.getVENDORADDRESSCOUNTRY());
 
         String s = mf.CreateAddressSearchname(searchname, d.getNameLine1(), d.getAddressLine1(), d.getPostalCode(), d.getCountryCode());
 
@@ -149,9 +152,16 @@ public class po_inbound implements NiklasComponent <byte[],byte[]>, NiklasLogger
             line.setArticleCode(item.getITEM());
             line.setQuantity(BigDecimal.valueOf(Double.parseDouble(item.getORDERQTY())));
 
+            /*
             ArticleLineFreeTextType text = new ArticleLineFreeTextType();
-            text.setArticleLineText(item.getITEMDESC().trim());
+            text.setArticleLineText("DESCR:" + item.getITEMDESC().trim());
             line.getArticleLineFreeText().add(text);
+             */
+
+            ArticleLineFreeTextType rate = new ArticleLineFreeTextType();
+            //rate.setArticleLineText("RATE:" + item.getRate());
+            rate.setArticleLineText(item.getRate());
+            line.getArticleLineFreeText().add(rate);
 
             lines.add(line);
         }

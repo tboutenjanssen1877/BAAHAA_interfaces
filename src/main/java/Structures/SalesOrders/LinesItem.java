@@ -58,6 +58,20 @@ public class LinesItem{
 	@SerializedName("SHIP_ADDRESS_2")
 	private String sHIPADDRESS2;
 
+	@SerializedName("RATE")
+	private String rate;
+
+	@SerializedName("INTERNAL_ID")
+	private String internalId;
+
+	public String getRate() {
+		return rate;
+	}
+
+	public String getInternalId() {
+		return internalId;
+	}
+
 	public String getITEMDESC(){
 		return iTEMDESC;
 	}
